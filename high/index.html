@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Toy Story: Crazy Pumpkin Car Race</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #3b82f6;
+            background-image: 
+                radial-gradient(#ec4899 20%, transparent 20%),
+                radial-gradient(#f472b6 20%, transparent 20%);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 10px;
+        }
+        .font-toy {
+            font-family: 'Fredoka One', cursive;
+        }
+
+        /* 3D-Molded LeapFrog "Explore & Learn Lilypad" Frame */
+        .frog-case {
+            position: relative;
+            background: linear-gradient(145deg, #7ad832, #47a016);
+            border: 12px solid #1f4e09;
+            border-radius: 52px;
+            padding: 64px 26px 26px 26px;
+            box-shadow: 0 24px 48px rgba(0,0,0,0.4), inset 0 8px 18px rgba(255,255,255,0.45), inset 0 -8px 16px rgba(0,0,0,0.35);
+            max-width: 1020px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Googly Eyes */
+        .frog-eye {
+            position: absolute;
+            top: -58px;
+            width: 108px;
+            height: 108px;
+            background: linear-gradient(145deg, #7ad832, #47a016);
+            border: 8px solid #1f4e09;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .frog-eye-left { left: 14%; }
+        .frog-eye-right { right: 14%; }
+        
+        .frog-pupil {
+            width: 74px;
+            height: 74px;
+            background: radial-gradient(circle at 35% 35%, #1e293b, #090d16);
+            border-radius: 50%;
+            position: relative;
+            border: 4px solid #ffffff;
+        }
+        .frog-pupil::after {
+            content: '';
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 24px;
+            height: 24px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            box-shadow: -10px 12px 0 -4px #ffffff;
+        }
+
+        /* Power Knob Dial */
+        .power-dial {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle at 30% 30%, #facc15, #ca8a04);
+            border: 3px solid #713f12;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            z-index: 10;
+            cursor: pointer;
+        }
+        .power-dial::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 14px;
+            background-color: #713f12;
+            border-radius: 2px;
+        }
+
+        /* Frog Face Center Details */
+        .frog-face-center {
+            position: absolute;
+            top: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            z-index: 6;
+        }
+        .frog-nostrils {
+            display: flex;
+            gap: 14px;
+        }
+        .frog-nostril {
+            width: 7px;
+            height: 7px;
+            background-color: #173d06;
+            border-radius: 50%;
+        }
+        .frog-mouth {
+            width: 68px;
+            height: 28px;
+            background-color: #0d1527;
+            border-bottom-left-radius: 34px;
+            border-bottom-right-radius: 34px;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid #173d06;
+        }
+        .frog-tongue {
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 32px;
+            height: 16px;
+            background-color: #f43f5e;
+            border-radius: 14px 14px 0 0;
+        }
+
+        /* Speaker Grilles */
+        .speaker-dots {
+            position: absolute;
+            top: 42px;
+            display: grid;
+            grid-template-columns: repeat(3, 7px);
+            gap: 5px;
+        }
+        .speaker-left { left: 90px; }
+        .speaker-right { right: 90px; }
+        .speaker-dot {
+            width: 7px;
+            height: 7px;
+            background-color: #1f4e09;
+            border-radius: 50%;
+        }
+
+        /* Corner Claw Clips / Webbed Grips */
+        .frog-foot {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            background-color: #7ad832;
+            border: 4px solid #1f4e09;
+            border-radius: 50%;
+            z-index: 25;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .foot-tl { top: 54px; left: 16px; transform: rotate(-30deg); }
+        .foot-tr { top: 54px; right: 16px; transform: rotate(30deg); }
+        .foot-bl { bottom: 16px; left: 16px; transform: rotate(-120deg); }
+        .foot-br { bottom: 16px; right: 16px; transform: rotate(120deg); }
+
+        /* Screen Frame */
+        .screen-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background-color: #0284c7;
+            border: 6px solid #1d4ed8;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: inset 0 0 24px rgba(0,0,0,0.65);
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="frog-case">
+        <div class="power-dial" title="LeapFrog Power Dial"></div>
+        
+        <!-- Googly Eyes -->
+        <div class="frog-eye frog-eye-left"><div class="frog-pupil"></div></div>
+        <div class="frog-eye frog-eye-right"><div class="frog-pupil"></div></div>
+
+        <!-- Nose & Mouth -->
+        <div class="frog-face-center">
+            <div class="frog-nostrils"><div class="frog-nostril"></div><div class="frog-nostril"></div></div>
+            <div class="frog-mouth"><div class="frog-tongue"></div></div>
+        </div>
+
+        <!-- Speaker Grilles -->
+        <div class="speaker-dots speaker-left">
+            <div class="speaker-dot"></div><div class="speaker-dot"></div><div class="speaker-dot"></div>
+            <div class="speaker-dot"></div><div class="speaker-dot"></div><div class="speaker-dot"></div>
+        </div>
+        <div class="speaker-dots speaker-right">
+            <div class="speaker-dot"></div><div class="speaker-dot"></div><div class="speaker-dot"></div>
+            <div class="speaker-dot"></div><div class="speaker-dot"></div><div class="speaker-dot"></div>
+        </div>
+
+        <!-- Corner Claw Grips -->
+        <div class="frog-foot foot-tl"></div><div class="frog-foot foot-tr"></div>
+        <div class="frog-foot foot-bl"></div><div class="frog-foot foot-br"></div>
+
+        <!-- Gameplay Screen Canvas Holder -->
+        <div class="screen-container">
+            <a href="../" aria-label="Back to level select" style="position:absolute;top:10px;left:10px;z-index:30;padding:6px 10px;border:2px solid #fde68a;border-radius:10px;background:rgba(30,41,59,.85);color:#fef3c7;font-weight:700;text-decoration:none;font-size:12px;">← LEVELS</a>
+            <canvas id="gameCanvas"></canvas>
+
+            <!-- HUD Overlay -->
+            <div id="hud-overlay" class="absolute top-0 left-0 w-full p-3 flex justify-between items-center pointer-events-none z-10 hidden">
+                <div class="bg-amber-950/85 border-2 border-amber-400 rounded-xl px-3 py-1 flex items-center gap-2 shadow-lg">
+                    <span class="text-xs text-amber-300 font-bold uppercase">SCORE</span>
+                    <span id="score-val" class="font-toy text-xl text-yellow-300">0</span>
+                </div>
+
+                <div class="bg-red-950/85 border-2 border-red-400 rounded-xl px-3 py-1 flex items-center gap-1 shadow-lg">
+                    <span class="text-xs text-red-300 font-bold uppercase mr-1">LIVES</span>
+                    <span id="lives-display" class="text-sm tracking-widest">❤️❤️❤️❤️❤️</span>
+                </div>
+
+                <div class="bg-purple-950/85 border-2 border-purple-400 rounded-xl px-3 py-1 flex items-center gap-2 shadow-lg">
+                    <span class="text-xs text-purple-300 font-bold uppercase">TIME</span>
+                    <span id="timer-val" class="font-toy text-xl text-yellow-300">60s</span>
+                </div>
+            </div>
+
+            <!-- Start / Game Over Screen Overlay -->
+            <div id="menu-screen" class="absolute inset-0 bg-blue-900/90 backdrop-blur-sm flex flex-col items-center justify-center p-4 text-center z-20">
+                <div class="bg-blue-600 border-4 border-amber-300 rounded-3xl p-4 sm:p-5 max-w-lg w-full shadow-2xl flex flex-col items-center">
+                    
+                    <h1 id="menu-title" class="font-toy text-2xl sm:text-3xl text-amber-300 drop-shadow-[0_3px_0_rgba(0,0,0,0.8)] mb-1">
+                        TOY STORY: CRAZY PUMPKIN RACE
+                    </h1>
+                    <p id="menu-sub" class="text-xs sm:text-sm text-sky-100 font-semibold mb-3">
+                        LeapFrog "Explore & Learn Lilypad" Edition
+                    </p>
+
+                    <!-- Obstacles & Hazards Grid -->
+                    <div class="bg-blue-800/80 border border-blue-300/40 rounded-2xl p-2.5 w-full mb-3 text-xs text-white">
+                        <div class="font-bold text-amber-300 mb-1">⚠️ OBSTACLES & REWARDS ⚠️</div>
+                        <div class="grid grid-cols-2 gap-1.5 text-left text-[11px] mb-2">
+                            <div>📦 <b>ABC Blocks:</b> Jump over!</div>
+                            <div>🏎️ <b>RC Cars:</b> Spawns after 30s!</div>
+                        </div>
+                        <div class="border-t border-blue-400/40 pt-1.5 grid grid-cols-2 gap-1 text-[10px] text-amber-200">
+                            <div>🤠 Woody's Hat: +100</div>
+                            <div>🚀 Buzz's Wings: +150</div>
+                            <div>🐑 Bo Peep's Sheep: +200</div>
+                            <div>👢 Jessie's Boots: +300</div>
+                        </div>
+                    </div>
+
+                    <!-- Instructions -->
+                    <p class="text-xs text-amber-200 mb-3 bg-amber-950/60 px-3 py-1.5 rounded-xl border border-amber-400/30">
+                        ⚡ Tap Screen / Press Space to Jump • Double Jump in Mid-Air!
+                    </p>
+
+                    <!-- Start Button -->
+                    <button id="start-btn" class="font-toy text-lg sm:text-2xl bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 hover:from-amber-300 hover:to-orange-300 text-slate-950 px-8 py-2 rounded-2xl border-2 border-yellow-200 shadow-[0_5px_0_#92400e] active:translate-y-1 active:shadow-none transition-all cursor-pointer">
+                        START RACE! 🏁
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class SoundEngine {
+            constructor() { this.ctx = null; }
+            init() {
+                if (!this.ctx) {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    this.ctx = new AudioContext();
+                }
+                if (this.ctx.state === 'suspended') this.ctx.resume();
+            }
+            playJump(isDouble = false) {
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(isDouble ? 580 : 380, now);
+                osc.frequency.exponentialRampToValueAtTime(isDouble ? 1050 : 750, now + 0.15);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+                osc.connect(gain); gain.connect(this.ctx.destination);
+                osc.start(now); osc.stop(now + 0.15);
+            }
+            playCollect(pts) {
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(500 + pts * 1.5, now);
+                osc.frequency.exponentialRampToValueAtTime(900 + pts * 1.5, now + 0.12);
+                gain.gain.setValueAtTime(0.25, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+                osc.connect(gain); gain.connect(this.ctx.destination);
+                osc.start(now); osc.stop(now + 0.12);
+            }
+            playHit() {
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(240, now);
+                osc.frequency.exponentialRampToValueAtTime(60, now + 0.3);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                osc.connect(gain); gain.connect(this.ctx.destination);
+                osc.start(now); osc.stop(now + 0.3);
+            }
+        }
+
+        const sound = new SoundEngine();
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let W = 800, H = 450;
+        function resizeCanvas() { canvas.width = W; canvas.height = H; }
+        resizeCanvas();
+
+        let gameState = 'START';
+        let score = 0;
+        let lives = 5;
+        let timer = 60;
+        let timerInterval = null;
+        let trackSpeed = 6.0;
+        let lastPlatformX = 0;
+
+        class PumpkinKart {
+            constructor() {
+                this.w = 76; this.h = 46;
+                this.x = 110; this.y = 200;
+                this.vy = 0;
+                this.gravity = 0.65;
+                this.jumpForce = -13.0;
+                this.isGrounded = false;
+                this.jumpCount = 0;
+                this.wheelAngle = 0;
+                this.invulnerableTimer = 0;
+            }
+
+            reset() {
+                this.x = 110; this.y = 200; this.vy = 0;
+                this.isGrounded = false; this.jumpCount = 0;
+                this.invulnerableTimer = 0;
+            }
+
+            jump() {
+                if (this.jumpCount < 2) {
+                    sound.playJump(this.jumpCount > 0);
+                    this.vy = this.jumpForce;
+                    this.jumpCount++;
+                    this.isGrounded = false;
+                }
+            }
+
+            update(platforms) {
+                this.vy += this.gravity;
+                this.y += this.vy;
+                this.wheelAngle += 0.18;
+
+                if (this.invulnerableTimer > 0) this.invulnerableTimer--;
+
+                this.isGrounded = false;
+                for (let plat of platforms) {
+                    if (this.x + this.w * 0.7 > plat.x && this.x + this.w * 0.2 < plat.x + plat.w) {
+                        const bottom = this.y + this.h;
+                        const platY = plat.y;
+                        if (bottom - this.vy <= platY + 14 && bottom >= platY) {
+                            this.y = platY - this.h;
+                            this.vy = 0;
+                            this.isGrounded = true;
+                            this.jumpCount = 0;
+                            break;
+                        }
+                    }
+                }
+
+                if (this.y > H + 60) takeDamage('pit');
+            }
+
+            draw() {
+                if (this.invulnerableTimer > 0 && Math.floor(this.invulnerableTimer / 5) % 2 === 0) return;
+
+                ctx.save();
+                ctx.translate(this.x, this.y);
+
+                // --- WOODY (Driver Left) ---
+                ctx.save();
+                ctx.translate(20, 6);
+                ctx.fillStyle = '#fde047'; ctx.fillRect(-6, -2, 12, 8); // Yellow Plaid
+                ctx.fillStyle = '#fbcfe8'; ctx.beginPath(); ctx.arc(0, -8, 6, 0, Math.PI*2); ctx.fill();
+                ctx.fillStyle = '#dc2626'; ctx.fillRect(-4, 3, 8, 3); // Red Bandana
+                ctx.fillStyle = '#b45309'; // Cowboy Hat
+                ctx.beginPath(); ctx.ellipse(0, -11, 10, 3, 0, 0, Math.PI*2); ctx.fill();
+                ctx.beginPath(); ctx.roundRect(-5, -18, 10, 8, [3,3,1,1]); ctx.fill();
+                ctx.restore();
+
+                // --- BO PEEP (Passenger Right) ---
+                ctx.save();
+                ctx.translate(42, 6);
+                ctx.fillStyle = '#38bdf8'; ctx.fillRect(-6, -2, 12, 8); // Blue Jumpsuit
+                ctx.fillStyle = '#fef08a'; ctx.beginPath(); ctx.arc(0, -8, 6, 0, Math.PI*2); ctx.fill();
+                ctx.fillStyle = '#ec4899'; ctx.beginPath(); ctx.arc(0, -14, 4, 0, Math.PI*2); ctx.fill();
+                ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(8, -4, 5, 0, Math.PI); ctx.stroke();
+                ctx.restore();
+
+                // --- PUMPKIN CAR BODY ---
+                const pGrad = ctx.createLinearGradient(0, 10, 0, this.h);
+                pGrad.addColorStop(0, '#fb923c'); pGrad.addColorStop(1, '#ea580c');
+                ctx.fillStyle = pGrad;
+                ctx.beginPath(); ctx.roundRect(4, 12, this.w - 8, this.h - 18, [18, 18, 10, 10]); ctx.fill();
+
+                // Glowing Eyes
+                ctx.fillStyle = '#fef08a';
+                ctx.beginPath(); ctx.moveTo(this.w*0.6, 26); ctx.lineTo(this.w*0.66, 22); ctx.lineTo(this.w*0.72, 26); ctx.fill();
+                ctx.beginPath(); ctx.moveTo(this.w*0.78, 26); ctx.lineTo(this.w*0.84, 22); ctx.lineTo(this.w*0.9, 26); ctx.fill();
+
+                // Stem Leaf
+                ctx.fillStyle = '#22c55e';
+                ctx.beginPath(); ctx.ellipse(14, 12, 8, 4, -0.4, 0, Math.PI*2); ctx.fill();
+
+                // Wheels
+                this.drawWheel(16, this.h - 2);
+                this.drawWheel(this.w - 16, this.h - 2);
+
+                ctx.restore();
+            }
+
+            drawWheel(wx, wy) {
+                ctx.save();
+                ctx.translate(wx, wy);
+                ctx.rotate(this.wheelAngle);
+                ctx.fillStyle = '#1e293b'; ctx.beginPath(); ctx.arc(0, 0, 10, 0, Math.PI*2); ctx.fill();
+                ctx.fillStyle = '#2563eb'; ctx.beginPath(); ctx.arc(0, 0, 7, 0, Math.PI*2); ctx.fill();
+                ctx.fillStyle = '#facc15';
+                ctx.beginPath();
+                for(let i=0; i<5; i++){
+                    let a = (i * 4 * Math.PI) / 5;
+                    ctx.lineTo(Math.cos(a)*5, Math.sin(a)*5);
+                }
+                ctx.closePath(); ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        class TrackPlatform {
+            constructor(x, y, w) {
+                this.x = x; this.y = y; this.w = w; this.h = 22;
+            }
+            update(speed) {
+                this.x -= speed;
+            }
+            draw() {
+                ctx.save();
+                ctx.fillStyle = '#2563eb';
+                ctx.beginPath(); ctx.roundRect(this.x, this.y, this.w, this.h, 6); ctx.fill();
+                ctx.fillStyle = '#f97316'; ctx.fillRect(this.x, this.y, this.w, 4);
+                
+                ctx.fillStyle = '#dc2626';
+                for(let px = this.x + 40; px < this.x + this.w - 20; px += 80) {
+                    ctx.fillRect(px, this.y + 6, 6, 10);
+                }
+
+                // Supports
+                ctx.fillStyle = '#475569';
+                ctx.fillRect(this.x + 30, this.y + this.h, 12, H - (this.y + this.h));
+                ctx.fillRect(this.x + this.w - 42, this.y + this.h, 12, H - (this.y + this.h));
+                ctx.restore();
+            }
+        }
+
+        class Obstacle {
+            constructor(x, y, type, plat) {
+                this.x = x; this.y = y; this.type = type; this.plat = plat;
+                this.rcDir = -1;
+                this.rcSpeed = 2.2;
+
+                if (type === 'BLOCK') {
+                    this.stack = Math.floor(Math.random() * 2) + 1; // 1 or 2 blocks high
+                    this.w = 32; this.h = 32 * this.stack;
+                } else if (type === 'RC_CAR') {
+                    this.w = 54; this.h = 28;
+                }
+            }
+
+            update(speed) {
+                this.x -= speed;
+                
+                if (this.type === 'RC_CAR') {
+                    this.x += this.rcDir * this.rcSpeed;
+                    if (this.x < this.plat.x + 20) this.rcDir = 1;
+                    if (this.x > this.plat.x + this.plat.w - 70) this.rcDir = -1;
+                }
+            }
+
+            draw() {
+                ctx.save();
+                const curY = this.y;
+
+                if (this.type === 'BLOCK') {
+                    const colors = ['#ef4444', '#f59e0b', '#10b981'];
+                    const letters = ['A', 'B', 'C'];
+                    for(let i = 0; i < this.stack; i++) {
+                        let by = curY - ((i + 1) * 32);
+                        ctx.fillStyle = colors[i % colors.length];
+                        ctx.beginPath(); ctx.roundRect(this.x, by, 32, 32, 4); ctx.fill();
+                        ctx.fillStyle = '#fef3c7'; ctx.fillRect(this.x + 4, by + 4, 24, 24);
+                        ctx.fillStyle = colors[i % colors.length];
+                        ctx.font = 'bold 16px "Fredoka One", sans-serif';
+                        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                        ctx.fillText(letters[i % letters.length], this.x + 16, by + 16);
+                    }
+                } 
+                else if (this.type === 'RC_CAR') {
+                    let by = curY - this.h;
+                    ctx.translate(this.x + this.w/2, by + this.h/2);
+                    if (this.rcDir > 0) ctx.scale(-1, 1);
+
+                    ctx.fillStyle = '#16a34a'; // Green Plastic Body
+                    ctx.beginPath(); ctx.roundRect(-25, -10, 50, 18, 6); ctx.fill();
+                    ctx.fillStyle = '#dc2626'; // Red Spoiler
+                    ctx.fillRect(-26, -18, 8, 12);
+                    // Antenna
+                    ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 2;
+                    ctx.beginPath(); ctx.moveTo(-10, -10); ctx.lineTo(-18, -26); ctx.stroke();
+                    // Wheels
+                    ctx.fillStyle = '#0f172a';
+                    ctx.beginPath(); ctx.arc(-15, 8, 7, 0, Math.PI*2); ctx.arc(15, 8, 7, 0, Math.PI*2); ctx.fill();
+                }
+
+                ctx.restore();
+            }
+
+            getBounds() {
+                if (this.type === 'BLOCK') {
+                    return { x: this.x, y: this.y - (32 * this.stack), w: this.w, h: 32 * this.stack };
+                } else if (this.type === 'RC_CAR') {
+                    return { x: this.x, y: this.y - this.h, w: this.w, h: this.h };
+                }
+            }
+        }
+
+        class Collectible {
+            constructor(x, y, type, plat) {
+                this.x = x; this.y = y; this.type = type; this.plat = plat;
+                this.w = 28; this.h = 28;
+                this.collected = false;
+                this.bob = Math.random() * Math.PI;
+
+                if(type === 'HAT') this.pts = 100;
+                else if(type === 'WINGS') this.pts = 150;
+                else if(type === 'SHEEP') this.pts = 200;
+                else if(type === 'BOOTS') this.pts = 300;
+            }
+            update(speed) {
+                this.x -= speed;
+                this.y += Math.sin(Date.now()*0.006 + this.bob) * 0.4;
+            }
+            draw() {
+                if(this.collected) return;
+                ctx.save();
+                ctx.translate(this.x + 14, this.y + 14);
+
+                if(this.type === 'HAT') {
+                    ctx.fillStyle = '#b45309'; ctx.beginPath(); ctx.ellipse(0, 2, 14, 5, 0, 0, Math.PI*2); ctx.fill();
+                    ctx.beginPath(); ctx.roundRect(-6, -8, 12, 10, [4,4,1,1]); ctx.fill();
+                } else if(this.type === 'WINGS') {
+                    ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.roundRect(-14, -6, 28, 12, 3); ctx.fill();
+                    ctx.fillStyle = '#a855f7'; ctx.fillRect(-10, -4, 20, 4);
+                } else if(this.type === 'SHEEP') {
+                    ctx.fillStyle = '#f8fafc'; ctx.beginPath(); ctx.arc(0, 0, 11, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = '#0f172a'; ctx.beginPath(); ctx.arc(4, -2, 2, 0, Math.PI*2); ctx.fill();
+                } else if(this.type === 'BOOTS') {
+                    ctx.fillStyle = '#dc2626'; ctx.beginPath(); ctx.roundRect(-6, -10, 12, 20, 3); ctx.fill();
+                    ctx.fillRect(-6, 2, 16, 8);
+                }
+                ctx.restore();
+            }
+        }
+
+        const kart = new PumpkinKart();
+        let platforms = [];
+        let obstacles = [];
+        let collectibles = [];
+
+        function drawBonnieBedroom() {
+            ctx.fillStyle = '#65a30d'; ctx.fillRect(0, 0, W, H * 0.55);
+            ctx.fillStyle = '#f8fafc'; ctx.fillRect(0, H * 0.55, W, H * 0.25);
+            ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 2;
+            for(let x=20; x<W; x+=40) ctx.strokeRect(x, H * 0.57, 30, H * 0.2);
+
+            ctx.fillStyle = '#78350f'; ctx.fillRect(0, H * 0.8, W, H * 0.2);
+
+            ctx.fillStyle = '#38bdf8'; ctx.fillRect(W * 0.65, H * 0.08, 120, 100);
+            ctx.fillStyle = '#fef08a'; ctx.fillRect(W * 0.63, H * 0.08, 25, 100); ctx.fillRect(W * 0.65 + 95, H * 0.08, 25, 100);
+
+            ctx.fillStyle = '#451a03'; ctx.fillRect(40, H * 0.35, 110, 90);
+            ctx.fillStyle = '#22c55e'; ctx.fillRect(50, H * 0.4, 90, 60);
+
+            ctx.fillStyle = '#2563eb'; ctx.beginPath(); ctx.ellipse(W * 0.4, H * 0.76, 16, 10, 0, 0, Math.PI*2); ctx.fill();
+            ctx.fillStyle = '#0f172a'; ctx.beginPath(); ctx.arc(W * 0.4 - 8, H * 0.78, 4, 0, Math.PI*2); ctx.arc(W * 0.4 + 8, H * 0.78, 4, 0, Math.PI*2); ctx.fill();
+        }
+
+        // Helper function to dynamically add new platform chunks
+        function spawnPlatformChunk() {
+            let gap = Math.floor(Math.random() * 60) + 60;
+            let width = Math.floor(Math.random() * 250) + 380;
+            let platX = lastPlatformX + gap;
+            
+            let plat = new TrackPlatform(platX, H * 0.68, width);
+            platforms.push(plat);
+            lastPlatformX = platX + width;
+
+            // Spawn ABC Blocks
+            if (Math.random() > 0.4) {
+                let obsX = plat.x + 140;
+                obstacles.push(new Obstacle(obsX, plat.y, 'BLOCK', plat));
+            }
+
+            // Spawn RC Cars (Only after 30s have passed)
+            if (timer <= 30 && Math.random() > 0.45) {
+                let rcX = plat.x + 220;
+                obstacles.push(new Obstacle(rcX, plat.y, 'RC_CAR', plat));
+            }
+
+            // Spawn Collectibles
+            let types = ['HAT', 'WINGS', 'SHEEP', 'BOOTS'];
+            for (let c = 0; c < 3; c++) {
+                let colX = plat.x + 50 + (c * 100);
+                let colY = plat.y - 45 - Math.random() * 25;
+                collectibles.push(new Collectible(colX, colY, types[Math.floor(Math.random() * types.length)], plat));
+            }
+        }
+
+        function initLevel() {
+            platforms = []; obstacles = []; collectibles = [];
+            
+            // Starting wide track platform
+            let startPlat = new TrackPlatform(40, H * 0.68, 800);
+            platforms.push(startPlat);
+            lastPlatformX = 840;
+
+            // Pre-generate enough platforms to fill well beyond screen
+            while (lastPlatformX < W + 1200) {
+                spawnPlatformChunk();
+            }
+        }
+
+        function takeDamage(type) {
+            if(kart.invulnerableTimer > 0) return;
+            sound.playHit();
+            lives--;
+            score = Math.max(0, score - 50);
+            updateHUD();
+            kart.invulnerableTimer = 150;
+
+            if(lives <= 0) endGame(false);
+            else if(type === 'pit') {
+                let safePlat = platforms.find(p => p.x + p.w > kart.x + 80) || platforms[0];
+                kart.x = safePlat.x + 40;
+                kart.y = safePlat.y - kart.h - 30;
+                kart.vy = 0;
+            }
+        }
+
+        function updateHUD() {
+            document.getElementById('score-val').innerText = score;
+            let str = '';
+            for(let i=0; i<lives; i++) str += '❤️';
+            for(let i=lives; i<5; i++) str += '🖤';
+            document.getElementById('lives-display').innerText = str;
+        }
+
+        function startGame() {
+            sound.init();
+            score = 0; lives = 5; timer = 60;
+            gameState = 'PLAYING';
+
+            document.getElementById('menu-screen').classList.add('hidden');
+            document.getElementById('hud-overlay').classList.remove('hidden');
+            updateHUD();
+
+            kart.reset();
+            initLevel();
+
+            if(timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if(gameState === 'PLAYING') {
+                    timer--;
+                    document.getElementById('timer-val').innerText = `${timer}s`;
+                    if(timer <= 0) endGame(true);
+                }
+            }, 1000);
+        }
+
+        function endGame(isWin) {
+            gameState = 'GAMEOVER';
+            clearInterval(timerInterval);
+
+            document.getElementById('menu-screen').classList.remove('hidden');
+            document.getElementById('menu-title').innerText = isWin ? 'RACE COMPLETED! 🏆' : 'GAME OVER 🏁';
+            document.getElementById('menu-sub').innerText = `FINAL SCORE: ${score}`;
+            document.getElementById('start-btn').innerText = 'RETRY RACE 🔄';
+        }
+
+        function handleInput() {
+            if(gameState === 'PLAYING') kart.jump();
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if(e.code === 'Space' || e.code === 'ArrowUp') handleInput();
+        });
+        canvas.addEventListener('mousedown', handleInput);
+        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); handleInput(); }, {passive: false});
+
+        function update() {
+            if(gameState !== 'PLAYING') return;
+
+            // Move platforms & clean up offscreen ones
+            for(let plat of platforms) plat.update(trackSpeed);
+            lastPlatformX -= trackSpeed;
+
+            // Continuously spawn endless platforms ahead
+            while (lastPlatformX < W + 800) {
+                spawnPlatformChunk();
+            }
+
+            // Filter out off-screen platforms
+            platforms = platforms.filter(p => p.x + p.w > -100);
+
+            // Update obstacles
+            for(let obs of obstacles) {
+                obs.update(trackSpeed);
+                if(kart.invulnerableTimer === 0) {
+                    let b = obs.getBounds();
+                    if (kart.x < b.x + b.w && kart.x + kart.w > b.x &&
+                        kart.y < b.y + b.h && kart.y + kart.h > b.y) {
+                        takeDamage('obstacle');
+                    }
+                }
+            }
+            obstacles = obstacles.filter(o => o.x > -100);
+
+            // Update collectibles
+            for(let c of collectibles) {
+                c.update(trackSpeed);
+                if(!c.collected &&
+                   kart.x < c.x + c.w && kart.x + kart.w > c.x &&
+                   kart.y < c.y + c.h && kart.y + kart.h > c.y) {
+                    c.collected = true;
+                    score += c.pts;
+                    sound.playCollect(c.pts);
+                    updateHUD();
+                }
+            }
+            collectibles = collectibles.filter(c => c.x > -100);
+
+            kart.update(platforms);
+        }
+
+        function render() {
+            ctx.clearRect(0, 0, W, H);
+            drawBonnieBedroom();
+
+            for(let plat of platforms) plat.draw();
+            for(let obs of obstacles) obs.draw();
+            for(let c of collectibles) c.draw();
+
+            kart.draw();
+        }
+
+        function loop() {
+            update();
+            render();
+            requestAnimationFrame(loop);
+        }
+
+        document.getElementById('start-btn').addEventListener('click', startGame);
+        loop();
+    </script>
+</body>
+</html>
