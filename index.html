@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
   Game level selector homepage.
-  Low links to the original game and High links to game 2.
+  Low displays low.jpg and links to game 2; High displays high.jpg and links to the original game.
   This page is static and requires only a browser plus the external font/CDN resources below.
 -->
 <html lang="en">
@@ -105,18 +105,22 @@
             </p>
 
             <div class="mt-7 grid gap-4 sm:grid-cols-2">
-                <a class="level-card rounded-3xl border-4 border-emerald-200 bg-gradient-to-br from-emerald-400 via-green-500 to-lime-600 p-5 text-slate-950 shadow-[0_7px_0_#166534]" href="low/">
-                    <div class="text-5xl" aria-hidden="true">🐸</div>
+                <a class="level-card overflow-hidden rounded-3xl border-4 border-emerald-200 bg-gradient-to-br from-emerald-400 via-green-500 to-lime-600 text-slate-950 shadow-[0_7px_0_#166534]" href="high/">
+                    <img class="h-40 w-full object-cover sm:h-48" src="low.jpg" alt="Low level preview">
+                    <div class="p-4">
                     <h2 class="font-toy mt-2 text-3xl">LOW</h2>
-                    <p class="mt-1 font-bold">Original pumpkin race</p>
+                    <p class="mt-1 font-bold">Game 2 challenge</p>
                     <span class="mt-4 inline-block rounded-xl border-2 border-white/70 bg-white/80 px-5 py-2 font-toy text-lg">PLAY LOW ▶</span>
+                    </div>
                 </a>
 
-                <a class="level-card rounded-3xl border-4 border-fuchsia-200 bg-gradient-to-br from-fuchsia-500 via-purple-600 to-indigo-700 p-5 text-white shadow-[0_7px_0_#4c1d95]" href="high/">
-                    <div class="text-5xl" aria-hidden="true">🚀</div>
+                <a class="level-card overflow-hidden rounded-3xl border-4 border-fuchsia-200 bg-gradient-to-br from-fuchsia-500 via-purple-600 to-indigo-700 text-white shadow-[0_7px_0_#4c1d95]" href="low/">
+                    <img class="h-40 w-full object-cover sm:h-48" src="high.jpg" alt="High level preview">
+                    <div class="p-4">
                     <h2 class="font-toy mt-2 text-3xl text-amber-200">HIGH</h2>
-                    <p class="mt-1 font-bold">Game 2 challenge</p>
+                    <p class="mt-1 font-bold">Original pumpkin race</p>
                     <span class="mt-4 inline-block rounded-xl border-2 border-amber-200 bg-amber-300 px-5 py-2 font-toy text-lg text-slate-950">PLAY HIGH ▶</span>
+                    </div>
                 </a>
             </div>
 
